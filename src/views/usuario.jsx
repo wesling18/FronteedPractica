@@ -10,6 +10,16 @@ const Usuarios = () => {
   const [cargando, setCargando] = useState(true);            // Controla el estado de carga
   const [errorCarga, setErrorCarga] = useState(null);        // Maneja errores de la petición
 
+
+
+
+
+
+
+
+
+
+
   // Lógica de obtención de datos con useEffect
   useEffect(() => {
     const obtenerUsuarios = async () => { // Método renombrado a español
