@@ -36,7 +36,17 @@ const TablaProducto = ({ productos, cargando, error }) => {
           <td>{producto.id_categoria}</td>
           <td>{producto.precio_unitario}</td>
           <td>{producto.stock}</td>
-          <td>{producto.imagen}</td>
+          <td>
+  {producto.imagen ? (
+    <img
+      src={`data:image/png;base64,${producto.imagen}`}
+      alt={producto.nombre_producto}
+      style={{ maxWidth: '100px' }}
+    />
+  ) : (
+    'Sin imagen'
+  )}
+</td>
                 
           </tr>
         ))}
