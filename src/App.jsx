@@ -10,6 +10,7 @@ import Categorias from "./views/categorias";
 import Ventas from "./views/ventas";
 import Usuarios from "./views/usuario";
 import Catalogo from "./views/CatalogoProductos";
+import Dashboard from "./views/Dashboard"
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/ventas" element={<Ventas />} />
         <Route path="/usuarios" element={<Usuarios />} />
           <Route path="/CatalogoProductos" element={<Catalogo />} />
+          <Route path="/dashboard" element={<Dashboard/>}/>
 
         </Routes>
       </main>
