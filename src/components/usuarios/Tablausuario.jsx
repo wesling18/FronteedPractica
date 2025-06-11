@@ -1,43 +1,44 @@
-// Importaciones necesarias para el componente visual
-
-// Importaciones necesarias para el componente visual
 import React from 'react';
-import { Table } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Table, Button } from 'react-bootstrap';
 
-// Declaración del componente TablaCategorias que recibe props
-const TablaUsuarios = ({ usuarios, cargando, error }) => {
-  // Renderizado condicional según el estado recibido por props
-  if (cargando) {
-    return <div>Cargando usuarios...</div>; // Muestra mensaje mientras carga
-  }
-  if (error) {
-    return <div>Error: {error}</div>;         // Muestra error si ocurre
-  }
-
-  // Renderizado de la tabla con los datos recibidos
+const TablaUsuarios= ({ usuarios, cargando, error, abrirModalEliminacion, abrirModalActualizacion }) => {
   return (
-    <Table striped bordered hover responsive>
+    <Table striped bordered hover>
       <thead>
         <tr>
-          <th>ID Usuarios</th>
-          <th>usuario</th>
-          <th>contraseña</th>
+          <th>ID Usuario</th>
+          <th>Usuario</th>
+          <th>Contraseña</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        {usuarios.map((usuario) => (
-          <tr key={usuario.id_usuario}>
-            <td>{usuario.id_usuario}</td>
-            <td>{usuario.usuario}</td>
-            <td>{usuario.contraseña}</td>
-            
-          </tr>
-        ))}
+        {cargando ? (
+          <tr><td colSpan="4">Cargando...</td></tr>
+        ) : error ? (
+          <tr><td colSpan="4">Error: {error}</td></tr>
+        ) : usuarios.length === 0 ? (
+          <tr><td colSpan="4">No hay usuarios registrados</td></tr>
+        ) : (
+          usuarios.map(usuario => (
+            <tr key={usuario.id_usuario}>
+              <td>{usuario.id_usuario}</td>
+              <td>{usuario.usuario}</td>
+              <td>{'*'.repeat(usuario.contraseña.length)}</td> {/* Ocultar contraseña por seguridad */}
+              <td>
+                <Button variant="warning" onClick={() => abrirModalActualizacion(usuario)}>
+                  Editar
+                </Button>{' '}
+                <Button variant="danger" onClick={() => abrirModalEliminacion(usuario)}>
+                  Eliminar
+                </Button>
+              </td>
+            </tr>
+          ))
+        )}
       </tbody>
     </Table>
   );
 };
 
-// Exportación del componente
 export default TablaUsuarios;

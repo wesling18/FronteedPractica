@@ -1,18 +1,18 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const ModalEliminacionProductos = ({ mostrarModalEliminacion, setMostrarModalEliminacion, eliminarProducto }) => {
+const ModalEliminacionVenta = ({ mostrarModalEliminacion, setMostrarModalEliminacion, eliminarVenta }) => {
   return (
     <Modal show={mostrarModalEliminacion} onHide={() => setMostrarModalEliminacion(false)}>
       <Modal.Header closeButton>
         <Modal.Title>Confirmar Eliminación</Modal.Title>
       </Modal.Header>
-      <Modal.Body>¿Estás seguro de eliminar este producto?</Modal.Body>
+      <Modal.Body>¿Estás seguro de eliminar esta venta?</Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => setMostrarModalEliminacion(false)}>
           Cancelar
         </Button>
-        <Button variant="danger" onClick={eliminarProducto}>
+        <Button variant="danger" onClick={eliminarVenta}>
           Eliminar
         </Button>
       </Modal.Footer>
@@ -20,4 +20,4 @@ const ModalEliminacionProductos = ({ mostrarModalEliminacion, setMostrarModalEli
   );
 };
 
-export default ModalEliminacionProductos;
+export default ModalEliminacionVenta;

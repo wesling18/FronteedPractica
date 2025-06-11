@@ -1,10 +1,22 @@
 // Importaciones necesarias para el componente visual
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Paginacion from '../ordenamiento/Paginacion';
 
 // Declaración del componente TablaCategorias que recibe props
-const TablaProducto = ({ productos, cargando, error }) => {
+const TablaProducto = ({ productos,
+    cargando,
+     error,
+     totalElementos,
+     elementosPorPagina,
+     paginaActual,
+     establecerPaginaActual,
+     abrirModalEliminacion,
+     abrirModalEdicion, 
+     generarPDFDetalleProducto  
+
+    }) => {
   // Renderizado condicional según el estado recibido por props
   if (cargando) {
     return <div>Cargando productos...</div>; // Muestra mensaje mientras carga
@@ -12,9 +24,14 @@ const TablaProducto = ({ productos, cargando, error }) => {
   if (error) {
     return <div>Error: {error}</div>;         // Muestra error si ocurre
   }
+  
+
+
+  
 
   // Renderizado de la tabla con los datos recibidos
   return (
+    <>
     <Table striped bordered hover responsive>
       <thead>
         <tr>
@@ -25,6 +42,7 @@ const TablaProducto = ({ productos, cargando, error }) => {
           <th>Precio Unitario</th>
           <th>Stock</th>
           <th>imagen</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -34,24 +52,62 @@ const TablaProducto = ({ productos, cargando, error }) => {
           <td>{producto.nombre_producto}</td>
           <td>{producto.descripcion_producto}</td>
           <td>{producto.id_categoria}</td>
-          <td>{producto.precio_unitario}</td>
+          <td>C$ {producto.precio_unitario}</td>
           <td>{producto.stock}</td>
           <td>
-  {producto.imagen ? (
-    <img
-      src={`data:image/png;base64,${producto.imagen}`}
-      alt={producto.nombre_producto}
-      style={{ maxWidth: '100px' }}
-    />
-  ) : (
-    'Sin imagen'
-  )}
-</td>
+            {producto.imagen ? (
+              <img
+                src={`data:image/png;base64,${producto.imagen}`}
+                alt={producto.nombre_producto}
+                style={{ maxWidth: '100px' }}
+              />
+            ) : (
+              'Sin imagen'
+            )}
+          </td>
                 
+          <td>
+
+              <Button
+                variant="outline-secondary"
+                size="sm"
+                className="me-2"
+                onClick={() => generarPDFDetalleProducto(producto)}
+              >
+                <i className="bi bi-filetype-pdf"></i>
+              </Button>
+
+
+            <Button
+                  variant="outline-warning"
+                  size="sm"
+                  className="me-2"
+                  onClick={() => abrirModalEdicion(producto)}
+                >
+                  <i className="bi bi-pencil"></i>
+                </Button>
+
+
+                <Button
+                  variant="outline-danger"
+                  size="sm"
+                  onClick={() => abrirModalEliminacion(producto)}
+                >
+                  <i className="bi bi-trash"></i>
+                </Button>
+            </td>
           </tr>
         ))}
       </tbody>
     </Table>
+
+    <Paginacion
+        elementosPorPagina={elementosPorPagina}
+        totalElementos={totalElementos}
+        paginaActual={paginaActual}
+        establecerPaginaActual={establecerPaginaActual}
+      />
+    </>
   );
 };
 

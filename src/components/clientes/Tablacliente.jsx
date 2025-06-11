@@ -1,58 +1,50 @@
-import React from "react";
-import { Table, Button } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+// Importaciones necesarias para el componente visual
+import React from 'react';
+import { Table, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Paginacion from '../ordenamiento/Paginacion';
 
-const TablaClientes = ({
-  clientes,
-  cargando,
+
+// Declaración del componente TablaCategorias que recibe props
+const TablaClientes  = ({ clientes, 
+  cargando, 
   error,
-  abrirModalEdicion,
+  totalElementos,
+  elementosPorPagina,
+  paginaActual,
+  establecerPaginaActual,
   abrirModalEliminacion,
+  abrirModalEdicion 
 }) => {
+  // Renderizado condicional según el estado recibido por props
   if (cargando) {
-    return <div>Cargando clientes...</div>;
+    return <div>Cargando clientes...</div>; // Muestra mensaje mientras carga
   }
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {error}</div>;         // Muestra error si ocurre
   }
 
-  // Función para determinar la clase de la fila según el id_cliente
-  const getRowClass = (id) => {
-    const modulo = id % 5;
-    switch (modulo) {
-      case 0:
-        return "table-active";
-      case 1:
-        return "table-success";
-      case 2:
-        return "table-warning";
-      case 3:
-        return "table-danger";
-      case 4:
-        return "table-info";
-      default:
-        return "";
-    }
-  };
-
+  // Renderizado de la tabla con los datos recibidos
   return (
-    <Table bordered hover responsive>
+    <>
+    <Table striped bordered hover responsive>
       <thead>
         <tr>
-          <th>ID Cliente</th>
-          <th>Primer Nombre</th>
-          <th>Segundo Nombre</th>
-          <th>Primer Apellido</th>
-          <th>Segundo Apellido</th>
+          <th>ID cliente</th>
+          <th>primer Nombre</th>
+          <th>segundo Nombre</th>
+          <th>primer Apellido</th>
+          <th>segudo Apellido</th>
           <th>Celular</th>
           <th>Dirección</th>
-          <th>Cédula</th>
+          <th>Cedula</th>
+          
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        {clientes.map((cliente) => (
-          <tr key={cliente.id_cliente} className={getRowClass(cliente.id_cliente)}>
+      {clientes.map((cliente) => (
+          <tr key={cliente.id_cliente}>
             <td>{cliente.id_cliente}</td>
             <td>{cliente.primer_nombre}</td>
             <td>{cliente.segundo_nombre}</td>
@@ -61,30 +53,44 @@ const TablaClientes = ({
             <td>{cliente.celular}</td>
             <td>{cliente.direccion}</td>
             <td>{cliente.cedula}</td>
+
             <td>
+
               <Button
-                variant="warning"
-                size="sm"
-                onClick={() => abrirModalEdicion(cliente)}
-                title="Editar cliente"
-                className="me-2"
-              >
-                🕷️
-              </Button>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => abrirModalEliminacion(cliente)}
-                title="Eliminar cliente"
-              >
-                🗑️
-              </Button>
-            </td>
+                    variant="outline-warning"
+                    size="sm"
+                    className="me-2"
+                    onClick={() => abrirModalEdicion(cliente)}
+                  >
+                    <i className="bi bi-pencil"></i>
+                  </Button>
+
+
+                  <Button
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={() => abrirModalEliminacion(cliente)}
+                  >
+                    <i className="bi bi-trash"></i>
+                  </Button>
+              </td>
+                
           </tr>
         ))}
       </tbody>
     </Table>
+
+
+    <Paginacion
+    elementosPorPagina={elementosPorPagina}
+    totalElementos={totalElementos}
+    paginaActual={paginaActual}
+    establecerPaginaActual={establecerPaginaActual}
+    />
+
+    </>
   );
 };
 
+// Exportación del componente
 export default TablaClientes;

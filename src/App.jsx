@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./views/Login";
 import Inicio from "./views/Inicio";
@@ -10,29 +10,29 @@ import Categorias from "./views/categorias";
 import Ventas from "./views/ventas";
 import Usuarios from "./views/usuario";
 import Catalogo from "./views/CatalogoProductos";
-import Dashboard from "./views/Dashboard"
+import Dashboard from "./views/Dashboard";
 import Estadisticas from "./views/Estadisticas";
-
+import Compras from "./views/Compras";
+import Empleados from "./views/Empleados";
 
 const App = () => {
   return (
-    
     <Router>
       <main className="margen-superior-main">
-      <Encabezado/>
+        <Encabezado/>
         <Routes>
-       
-
-        <Route path="/" element={<Login />} />
-        <Route path="/inicio" element={<Inicio />} />
-        <Route path="/clientes" element={<Clientes />} />
-        <Route path="/productos" element={<Productos />} />
-        <Route path="/categorias" element={<Categorias />} />
-        <Route path="/ventas" element={<Ventas />} />
-        <Route path="/usuarios" element={<Usuarios />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/inicio" element={<Inicio />} />
+          <Route path="/clientes" element={<Clientes />} />
+          <Route path="/productos" element={<Productos />} />
+          <Route path="/categorias" element={<Categorias />} />
+          <Route path="/ventas" element={<Ventas />} />
+          <Route path="/usuarios" element={<Usuarios />} />
+          <Route path="/compras" element={<Compras />} />
           <Route path="/CatalogoProductos" element={<Catalogo />} />
           <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/Estadisticas" element={<Estadisticas/>}/>
+          <Route path="/empleados" element={<Empleados/>}/>
         </Routes>
       </main>
     </Router>

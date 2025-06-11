@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 
-const ModalRegistroCliente = ({
+const ModalRegistroCliente= ({
   mostrarModalRegistro,
   setMostrarModalRegistro,
   registrarCliente,
