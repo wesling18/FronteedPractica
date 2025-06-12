@@ -1,7 +1,13 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const ModalEliminacionVenta = ({ mostrarModalEliminacion, setMostrarModalEliminacion, eliminarVenta }) => {
+const ModalEliminacionVenta = ({ mostrarModalEliminacion, setMostrarModalEliminacion, eliminarVenta, venta }) => {
+  const handleEliminar = () => {
+    if (venta && venta.id_venta) {
+      eliminarVenta(venta.id_venta);
+    }
+  };
+
   return (
     <Modal show={mostrarModalEliminacion} onHide={() => setMostrarModalEliminacion(false)}>
       <Modal.Header closeButton>
@@ -12,7 +18,7 @@ const ModalEliminacionVenta = ({ mostrarModalEliminacion, setMostrarModalElimina
         <Button variant="secondary" onClick={() => setMostrarModalEliminacion(false)}>
           Cancelar
         </Button>
-        <Button variant="danger" onClick={eliminarVenta}>
+        <Button variant="danger" onClick={handleEliminar}>
           Eliminar
         </Button>
       </Modal.Footer>

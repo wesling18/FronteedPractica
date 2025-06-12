@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Table, Alert } from 'react-bootstrap';
 
-const ModalActualizacionVenta = ({ mostrarModal, setMostrarModal, venta, detalles, clientes, empleados, productos, actualizarVenta, updateError }) => {
+const ModalActualizacionVenta = ({ mostrarModal, setMostrarModal, venta, detalles, clientes, empleados, productos, actualizarVenta, errorCarga }) => {
   const [idCliente, setIdCliente] = useState(venta?.id_cliente || '');
   const [idEmpleado, setIdEmpleado] = useState(venta?.id_empleado || '');
   const [fechaVenta, setFechaVenta] = useState(venta?.fecha_venta ? new Date(venta.fecha_venta) : new Date());
@@ -37,14 +37,15 @@ const ModalActualizacionVenta = ({ mostrarModal, setMostrarModal, venta, detalle
     }
     try {
       const totalVenta = calcularTotal();
-      await actualizarVenta({
+      const ventaActualizada = {
         id_venta: venta.id_venta,
         id_cliente: idCliente,
         id_empleado: idEmpleado,
         fecha_venta: fechaVenta.toISOString().slice(0, 19).replace('T', ' '),
         total_venta: totalVenta,
-        detalles: detallesVenta
-      });
+      };
+      await actualizarVenta(ventaActualizada, detallesVenta); // Pasar los parámetros
+      setMostrarModal(false); // Cerrar el modal localmente (opcional, ya se maneja en el padre)
     } catch (error) {
       setLocalError(error.message);
     }
@@ -56,7 +57,7 @@ const ModalActualizacionVenta = ({ mostrarModal, setMostrarModal, venta, detalle
         <Modal.Title>Actualizar Venta</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {updateError && <Alert variant="danger">Error: {updateError}</Alert>}
+        {errorCarga && <Alert variant="danger">Error: {errorCarga}</Alert>}
         {localError && <Alert variant="danger">{localError}</Alert>}
         <Form>
           <Form.Group>

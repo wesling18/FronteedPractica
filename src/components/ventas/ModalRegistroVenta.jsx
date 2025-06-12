@@ -17,13 +17,13 @@ const ModalRegistroVenta = ({
 }) => {
   const [idCliente, setIdCliente] = useState(nuevaVenta.id_cliente);
   const [idEmpleado, setIdEmpleado] = useState(nuevaVenta.id_empleado);
-  const [fechaVenta, setFechaVenta] = useState(nuevaVenta.fecha_venta);
+  const [fechaVenta, setFechaVenta] = useState(nuevaVenta.fecha_venta || new Date());
   const [nuevoDetalle, setNuevoDetalle] = useState({ id_producto: '', cantidad: 1, precio_unitario: 0 });
 
   useEffect(() => {
-    setIdCliente(nuevaVenta.id_cliente);
-    setIdEmpleado(nuevaVenta.id_empleado);
-    setFechaVenta(nuevaVenta.fecha_venta);
+    setIdCliente(nuevaVenta.id_cliente || '');
+    setIdEmpleado(nuevaVenta.id_empleado || '');
+    setFechaVenta(nuevaVenta.fecha_venta ? new Date(nuevaVenta.fecha_venta) : new Date());
     console.log('Productos disponibles en el modal:', productos); // Depuración
   }, [nuevaVenta, productos]);
 
@@ -105,16 +105,16 @@ const ModalRegistroVenta = ({
           </Form.Group>
           <Form.Group>
             <Form.Label>Fecha de Venta</Form.Label>
-            <Form.Control type="date" value={fechaVenta ? fechaVenta.toISOString().split('T')[0] : ''} onChange={e => {
+            <Form.Control type="date" value={fechaVenta.toISOString().split('T')[0]} onChange={e => {
               const [year, month, day] = e.target.value.split('-');
-              setFechaVenta(new Date(year, month - 1, day, fechaVenta.getHours(), fechaVenta.getMinutes(), fechaVenta.getSeconds()));
+              setFechaVenta(new Date(year, month - 1, day));
             }} />
           </Form.Group>
           <Form.Group>
             <Form.Label>Hora de Venta</Form.Label>
-            <Form.Control type="time" value={fechaVenta ? fechaVenta.toTimeString().split(' ')[0].substring(0, 5) : ''} onChange={e => {
+            <Form.Control type="time" value={fechaVenta.toTimeString().split(' ')[0].substring(0, 5)} onChange={e => {
               const [hours, minutes] = e.target.value.split(':');
-              setFechaVenta(new Date(fechaVenta.getFullYear(), fechaVenta.getMonth(), fechaVenta.getDate(), hours, minutes, 0));
+              setFechaVenta(new Date(fechaVenta.setHours(hours, minutes, 0, 0)));
             }} />
           </Form.Group>
           <h5>Detalles de la Venta</h5>

@@ -2,7 +2,7 @@ import React from "react";
 import { Form, InputGroup } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-const CuadroBusquedas = ({ textoBusqueda, manejarCambioBusqueda  }) => {
+const CuadroBusqueda = ({ textoBusqueda, manejarCambioBusqueda  }) => {
   return (
     <InputGroup className="mb-3" style={{ width: "100%" }}>
       <InputGroup.Text>
@@ -18,4 +18,4 @@ const CuadroBusquedas = ({ textoBusqueda, manejarCambioBusqueda  }) => {
   );
 };
 
-export default CuadroBusquedas;
+export default CuadroBusqueda;

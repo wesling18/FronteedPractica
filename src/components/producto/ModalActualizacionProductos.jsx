@@ -35,7 +35,7 @@ const ModalActualizacionProducto = ({ mostrarModal, setMostrarModal, producto, a
       stock: parseInt(stock),
       imagen
     };
-    actualizarProducto(productoActualizado);
+    actualizarProducto(productoActualizado); // Pasar el objeto actualizado
     setLocalError(null);
   };
 

@@ -22,7 +22,6 @@ const TablaVentas = ({ ventas, cargando, error, obtenerDetalles, abrirModalElimi
           <th>Empleado</th>
           <th>Total</th>
           <th>Acciones</th>
-
         </tr>
       </thead>
       <tbody>
@@ -33,7 +32,7 @@ const TablaVentas = ({ ventas, cargando, error, obtenerDetalles, abrirModalElimi
             <td>{venta.nombre_cliente}</td>
             <td>{venta.nombre_empleado}</td>
             <td>C$ {venta.total_venta.toFixed(2)}</td>
-            <td >
+            <td>
               <Button
                 variant="outline-success"
                 size="sm"
@@ -49,15 +48,14 @@ const TablaVentas = ({ ventas, cargando, error, obtenerDetalles, abrirModalElimi
               >
                 <i className="bi bi-trash"></i>
               </Button>
-                <Button
-                  variant="outline-warning"
-                  size="sm"
-                  className="me-2"
-                  onClick={() => abrirModalActualizacion(venta)}
-                >
-                  <i className="bi bi-pencil"></i>
-                </Button>
-
+              <Button
+                variant="outline-warning"
+                size="sm"
+                className="me-2"
+                onClick={() => abrirModalActualizacion(venta)}
+              >
+                <i className="bi bi-pencil"></i>
+              </Button>
             </td>
           </tr>
         ))}

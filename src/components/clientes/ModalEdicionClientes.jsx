@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 
-const ModalEdicionCliente = ({
+const ModalEdicionClientes = ({
   mostrarModalEdicion,
   setMostrarModalEdicion,
   clienteEditado,
@@ -9,11 +9,36 @@ const ModalEdicionCliente = ({
   actualizarCliente,
   errorCarga,
 }) => {
+  const [idCliente, setIdCliente] = useState(clienteEditado?.id_cliente || '');
+
+  useEffect(() => {
+    if (clienteEditado) {
+      setIdCliente(clienteEditado.id_cliente || '');
+    }
+  }, [clienteEditado]);
+
+  const handleActualizarCliente = () => {
+    const datos = {
+      id_cliente: idCliente,
+      primer_nombre: clienteEditado?.primer_nombre || '',
+      segundo_nombre: clienteEditado?.segundo_nombre || '',
+      primer_apellido: clienteEditado?.primer_apellido || '',
+      segundo_apellido: clienteEditado?.segundo_apellido || '',
+      celular: clienteEditado?.celular || '',
+      direccion: clienteEditado?.direccion || '',
+      cedula: clienteEditado?.cedula || '',
+    };
+    console.log('Datos a enviar:', datos); // Depuración
+    if (!datos.primer_nombre || !datos.primer_apellido || !datos.cedula || !datos.celular) {
+      alert('Por favor, complete todos los campos obligatorios (Primer Nombre, Primer Apellido, Cédula, Celular).');
+      return;
+    }
+    actualizarCliente(datos);
+    setMostrarModalEdicion(false);
+  };
+
   return (
-    <Modal
-      show={mostrarModalEdicion}
-      onHide={() => setMostrarModalEdicion(false)}
-    >
+    <Modal show={mostrarModalEdicion} onHide={() => setMostrarModalEdicion(false)}>
       <Modal.Header closeButton>
         <Modal.Title>Editar Cliente</Modal.Title>
       </Modal.Header>
@@ -31,7 +56,6 @@ const ModalEdicionCliente = ({
               required
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formSegundoNombre">
             <Form.Label>Segundo Nombre</Form.Label>
             <Form.Control
@@ -43,7 +67,6 @@ const ModalEdicionCliente = ({
               maxLength={20}
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formPrimerApellido">
             <Form.Label>Primer Apellido</Form.Label>
             <Form.Control
@@ -56,7 +79,6 @@ const ModalEdicionCliente = ({
               required
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formSegundoApellido">
             <Form.Label>Segundo Apellido</Form.Label>
             <Form.Control
@@ -68,7 +90,6 @@ const ModalEdicionCliente = ({
               maxLength={20}
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formCelular">
             <Form.Label>Celular</Form.Label>
             <Form.Control
@@ -76,17 +97,15 @@ const ModalEdicionCliente = ({
               name="celular"
               value={clienteEditado?.celular || ""}
               onChange={manejarCambioInputEdicion}
-              placeholder="Ingresa el número de celular (máx. 8 caracteres)"
+              placeholder="Ingresa el número de celular (8 dígitos)"
               maxLength={8}
               required
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formDireccion">
             <Form.Label>Dirección</Form.Label>
             <Form.Control
-              as="textarea"
-              rows={3}
+              type="text"
               name="direccion"
               value={clienteEditado?.direccion || ""}
               onChange={manejarCambioInputEdicion}
@@ -94,7 +113,6 @@ const ModalEdicionCliente = ({
               maxLength={150}
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formCedula">
             <Form.Label>Cédula</Form.Label>
             <Form.Control
@@ -107,18 +125,16 @@ const ModalEdicionCliente = ({
               required
             />
           </Form.Group>
-
-          {errorCarga && <div className="text-danger mt-2">{errorCarga}</div>}
+          {errorCarga && (
+            <div className="text-danger mt-2">{errorCarga}</div>
+          )}
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          variant="secondary"
-          onClick={() => setMostrarModalEdicion(false)}
-        >
+        <Button variant="secondary" onClick={() => setMostrarModalEdicion(false)}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={actualizarCliente}>
+        <Button variant="primary" onClick={handleActualizarCliente}>
           Guardar Cambios
         </Button>
       </Modal.Footer>
@@ -126,4 +142,4 @@ const ModalEdicionCliente = ({
   );
 };
 
-export default ModalEdicionCliente;
+export default ModalEdicionClientes;

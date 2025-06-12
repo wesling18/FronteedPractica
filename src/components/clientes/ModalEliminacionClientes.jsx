@@ -1,35 +1,21 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const ModalEliminacionCliente = ({
+const ModalEliminacionClientes = ({
   mostrarModalEliminacion,
   setMostrarModalEliminacion,
-  clienteAEliminar,
   eliminarCliente,
 }) => {
   return (
-    <Modal
-      show={mostrarModalEliminacion}
-      onHide={() => setMostrarModalEliminacion(false)}
-    >
+    <Modal show={mostrarModalEliminacion} onHide={() => setMostrarModalEliminacion(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Eliminar Cliente</Modal.Title>
+        <Modal.Title>Confirmar Eliminación</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>
-          ¿Estás seguro de que deseas eliminar al cliente{" "}
-          <strong>
-            {clienteAEliminar?.primer_nombre} {clienteAEliminar?.primer_apellido}
-          </strong>
-          ?
-        </p>
-        <p>Esta acción no se puede deshacer.</p>
+        ¿Estás seguro de que deseas eliminar este cliente?
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          variant="secondary"
-          onClick={() => setMostrarModalEliminacion(false)}
-        >
+        <Button variant="secondary" onClick={() => setMostrarModalEliminacion(false)}>
           Cancelar
         </Button>
         <Button variant="danger" onClick={eliminarCliente}>
@@ -40,4 +26,4 @@ const ModalEliminacionCliente = ({
   );
 };
 
-export default ModalEliminacionCliente;
+export default ModalEliminacionClientes;

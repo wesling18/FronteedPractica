@@ -1,12 +1,10 @@
-// Importaciones necesarias para la vista
 import React, { useState, useEffect } from 'react';
-import TablaVentas from '../components/ventas/Tablaventas';// Importa el componente de tabla
+import TablaVentas from '../components/ventas/Tablaventas'; // Importa el componente de tabla
 import { Container, Button, Row, Col } from "react-bootstrap";
 import ModalDetallesVenta from '../components/detalles_ventas/ModalDetallesventa';
 import ModalEliminacionVenta from '../components/ventas/ModalEliminacionVenta';
 import ModalRegistroVenta from '../components/ventas/ModalRegistroVenta';
 import ModalActualizacionVenta from '../components/ventas/ModalActualizacionVenta';
-
 
 // Declaración del componente Ventas
 const Ventas = () => {
@@ -15,7 +13,6 @@ const Ventas = () => {
   const [cargando, setCargando] = useState(true);     // Controla el estado de carga
   const [errorCarga, setErrorCarga] = useState(null); // Maneja errores de la petición
 
-  
   const [mostrarModal, setMostrarModal] = useState(false); // Estado para el modal
   const [detallesVenta, setDetallesVenta] = useState([]); // Estado para los detalles
   const [cargandoDetalles, setCargandoDetalles] = useState(false); // Estado de carga de detalles
@@ -25,28 +22,29 @@ const Ventas = () => {
   const [ventaAEliminar, setVentaAEliminar] = useState(null);
 
   const [mostrarModalActualizacion, setMostrarModalActualizacion] = useState(false);
-const [ventaAEditar, setVentaAEditar] = useState(null);
-const [detallesEditados, setDetallesEditados] = useState([]);
+  const [ventaAEditar, setVentaAEditar] = useState(null);
+  const [detallesEditados, setDetallesEditados] = useState([]);
 
-const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
-const [clientes, setClientes] = useState([]);
-const [empleados, setEmpleados] = useState([]);
-const [productos, setProductos] = useState([]);
-const [nuevaVenta, setNuevaVenta] = useState({
-  id_cliente: '',
-  id_empleado: '',
-  fecha_venta: new Date(),
-  total_venta: 0
-});
-const [detallesNuevos, setDetallesNuevos] = useState([]);
+  const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
+  const [clientes, setClientes] = useState([]);
+  const [empleados, setEmpleados] = useState([]);
+  const [productos, setProductos] = useState([]);
+  const [nuevaVenta, setNuevaVenta] = useState({
+    id_cliente: '',
+    id_empleado: '',
+    fecha_venta: new Date(),
+    total_venta: 0
+  });
+  const [detallesNuevos, setDetallesNuevos] = useState([]);
 
   const obtenerVentas = async () => {
     try {
-      const respuesta = await fetch('http://localhost:3000/api/obtenerventas'); // Ruta ajustada al controlador
+      const respuesta = await fetch('http://localhost:3000/api/obtenerventas');
       if (!respuesta.ok) {
         throw new Error('Error al cargar las ventas');
       }
       const datos = await respuesta.json();
+      console.log('Datos de ventas:', datos); // Depuración
       setListaVentas(datos);    // Actualiza el estado con los datos
       setCargando(false);       // Indica que la carga terminó
     } catch (error) {
@@ -62,7 +60,6 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
     obtenerEmpleados();
     obtenerProductos();
   }, []);                       // Array vacío para que solo se ejecute una vez
-
 
   const eliminarVenta = async () => {
     if (!ventaAEliminar) return;
@@ -89,18 +86,18 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
     setVentaAEliminar(venta);
     setMostrarModalEliminacion(true);
   };
-  
 
   // Función para obtener detalles de una venta
   const obtenerDetalles = async (id_venta) => {
     setCargandoDetalles(true);
     setErrorDetalles(null);
     try {
-      const respuesta = await fetch(`http://localhost:3000/api/obtenerdetallesventas/${id_venta}`);
+      const respuesta = await fetch(`http://localhost:3000/api/obtenerdetallesventa/${id_venta}`);
       if (!respuesta.ok) {
         throw new Error('Error al cargar los detalles de la venta');
       }
       const datos = await respuesta.json();
+      console.log('Datos de detalles:', datos); // Depuración
       setDetallesVenta(datos);
       setCargandoDetalles(false);
       setMostrarModal(true); // Abre el modal
@@ -115,6 +112,7 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
       const respuesta = await fetch('http://localhost:3000/api/clientes');
       if (!respuesta.ok) throw new Error('Error al cargar los clientes');
       const datos = await respuesta.json();
+      console.log('Datos de clientes:', datos); // Depuración
       setClientes(datos);
     } catch (error) {
       setErrorCarga(error.message);
@@ -126,6 +124,7 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
       const respuesta = await fetch('http://localhost:3000/api/empleados');
       if (!respuesta.ok) throw new Error('Error al cargar los empleados');
       const datos = await respuesta.json();
+      console.log('Datos de empleados:', datos); // Depuración
       setEmpleados(datos);
     } catch (error) {
       setErrorCarga(error.message);
@@ -137,6 +136,7 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
       const respuesta = await fetch('http://localhost:3000/api/productos');
       if (!respuesta.ok) throw new Error('Error al cargar los productos');
       const datos = await respuesta.json();
+      console.log('Datos de productos:', datos); // Depuración
       setProductos(datos);
     } catch (error) {
       setErrorCarga(error.message);
@@ -144,6 +144,10 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
   };
 
   const agregarDetalle = (detalle) => {
+    if (productos.length === 0) {
+      setErrorCarga("Los productos no están disponibles. Por favor, espera a que se carguen.");
+      return;
+    }
     setDetallesNuevos(prev => [...prev, detalle]);
     setNuevaVenta(prev => ({
       ...prev,
@@ -161,9 +165,7 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
       const ventaData = {
         id_cliente: nuevaVenta.id_cliente,
         id_empleado: nuevaVenta.id_empleado,
-        fecha_venta: nuevaVenta.fecha_venta.toLocaleString('en-CA',
-      { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', 
-        minute: '2-digit', second: '2-digit', hour12: false }).replace(',', ' '),
+        fecha_venta: nuevaVenta.fecha_venta.toISOString().slice(0, 19).replace('T', ' '),
         total_venta: detallesNuevos.reduce((sum, d) => sum + (d.cantidad * d.precio_unitario), 0),
         detalles: detallesNuevos
       };
@@ -186,15 +188,14 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
     }
   };
 
-
   const abrirModalActualizacion = async (venta) => {
     setCargandoDetalles(true);
     try {
+      console.log('Abriendo modal de actualización para venta:', venta); // Depuración
       const respuestaventa = await fetch(`http://localhost:3000/api/obternerventaporid/${venta.id_venta}`);
       if (!respuestaventa.ok) throw new Error('Error al cargar la venta');
       const datosventa = await respuestaventa.json();
   
-      
       const datoscompletos = {
         id_venta: datosventa.id_venta,
         id_cliente: datosventa.id_cliente,
@@ -207,7 +208,7 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
       
       setVentaAEditar(datoscompletos);
   
-      const respuesta = await fetch(`http://localhost:3000/api/obtenerdetallesventas/${venta.id_venta}`);
+      const respuesta = await fetch(`http://localhost:3000/api/obtenerdetallesventa/${venta.id_venta}`);
       if (!respuesta.ok) throw new Error('Error al cargar los detalles de la venta');
       const datos = await respuesta.json();
       setDetallesEditados(datos);
@@ -220,9 +221,7 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
     }
   };
 
-
   const actualizarVenta = async (ventaActualizada, detalles) => {
-
     if (!ventaActualizada.id_cliente || !ventaActualizada.id_empleado || !ventaActualizada.fecha_venta || detalles.length === 0) {
       setErrorCarga("Por favor, completa todos los campos y agrega al menos un detalle.");
       return;
@@ -232,7 +231,7 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
         id_venta: ventaActualizada.id_venta,
         id_cliente: ventaActualizada.id_cliente,
         id_empleado: ventaActualizada.id_empleado,
-        fecha_venta: ventaActualizada.fecha_venta.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(',', ' '),
+        fecha_venta: new Date(ventaActualizada.fecha_venta).toISOString().slice(0, 19).replace('T', ' '),
         total_venta: detalles.reduce((sum, d) => sum + (d.cantidad * d.precio_unitario), 0),
         detalles
       };
@@ -244,7 +243,7 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
       });
       if (!respuesta.ok) throw new Error('Error al actualizar la venta');
       await obtenerVentas();
-      setMostrarModalActualizacion(false);
+      setMostrarModalActualizacion(false); // Cerrar el modal tras éxito
       setVentaAEditar(null);
       setDetallesEditados([]);
       setErrorCarga(null);
@@ -287,11 +286,11 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
           errorDetalles={errorDetalles}
         />
 
-        
         <ModalEliminacionVenta
           mostrarModalEliminacion={mostrarModalEliminacion}
           setMostrarModalEliminacion={setMostrarModalEliminacion}
           eliminarVenta={eliminarVenta}
+          venta={ventaAEliminar} // Pasar la venta para que ModalEliminacionVenta la use
         />
 
         <ModalRegistroVenta
@@ -309,20 +308,18 @@ const [detallesNuevos, setDetallesNuevos] = useState([]);
           productos={productos}
         />
 
-
-      <ModalActualizacionVenta
-        mostrarModal={mostrarModalActualizacion}
-        setMostrarModal={setMostrarModalActualizacion}
-        venta={ventaAEditar}
-        detallesVenta={detallesEditados}
-        setDetallesVenta={setDetallesEditados}
-        actualizarVenta={actualizarVenta}
-        errorCarga={errorCarga}
-        clientes={clientes}
-        empleados={empleados}
-        productos={productos}
-      />
-
+        <ModalActualizacionVenta
+          mostrarModal={mostrarModalActualizacion}
+          setMostrarModal={setMostrarModalActualizacion}
+          venta={ventaAEditar}
+          detalles={detallesEditados} // Cambiado de detallesVenta a detalles para coincidir con la prop esperada
+          setDetallesVenta={setDetallesEditados}
+          actualizarVenta={actualizarVenta}
+          errorCarga={errorCarga}
+          clientes={clientes}
+          empleados={empleados}
+          productos={productos}
+        />
       </Container>
     </>
   );
